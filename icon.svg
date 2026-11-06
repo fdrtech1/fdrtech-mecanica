@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#101214"/>
+  <!-- faixa zebrada inferior -->
+  <clipPath id="zebra"><rect y="420" width="512" height="92"/></clipPath>
+  <g clip-path="url(#zebra)">
+    <rect y="420" width="512" height="92" fill="#ffc400"/>
+    <path d="M-60 512l92-92h40l-92 92zM40 512l92-92h40l-92 92zM140 512l92-92h40l-92 92zM240 512l92-92h40l-92 92zM340 512l92-92h40l-92 92zM440 512l92-92h40l-92 92z" fill="#101214"/>
+  </g>
+  <!-- engrenagem -->
+  <path d="M256 96l22 38 43-8 9 43 39 20-19 39 19 39-39 20-9 43-43-8-22 38-22-38-43 8-9-43-39-20 19-39-19-39 39-20 9-43 43 8z" fill="#ffc400"/>
+  <circle cx="256" cy="266" r="66" fill="#101214"/>
+  <!-- gancho -->
+  <path d="M256 206v44a28 28 0 1 1-28 28" stroke="#ffc400" stroke-width="18" fill="none" stroke-linecap="round"/>
+</svg>

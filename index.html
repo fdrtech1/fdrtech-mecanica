@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fdrtech Mecânica Industrial</title>
+  <meta name="description" content="Projetos, fabricação, solda, plasma, reforma e locação de guindastes e munck. Peça seu orçamento pelo WhatsApp.">
+  <meta name="theme-color" content="#101214">
+  <meta name="color-scheme" content="dark">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Fdrtech Mec">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!-- Fontes gratuitas do Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-tela="inicio">
+  <a class="pular" href="#app">Pular para o conteúdo</a>
+
+  <!-- Confirmação de idade (18+) -->
+  <div id="idade" class="idade" role="dialog" aria-modal="true" aria-labelledby="idade-titulo" hidden>
+    <div class="idade-caixa">
+      <div class="faixa-rasta" aria-hidden="true"></div>
+      <svg class="idade-bandeira" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="150" fill="#0b0b09"/><path d="M0 0h300L150 75zM0 150h300L150 75z" fill="#009b3a"/><path d="M0 0l300 150M300 0L0 150" stroke="#fed100" stroke-width="24"/></svg>
+      <div id="idade-pergunta">
+        <h2 id="idade-titulo">Você tem 18 anos ou mais?</h2>
+        <p>Este app vende produtos de tabacaria. A venda é proibida para menores de 18 anos.</p>
+        <div class="idade-botoes">
+          <button type="button" id="idade-sim" class="btn btn-primario">Sim, tenho 18+</button>
+          <button type="button" id="idade-nao" class="btn btn-secundario">Não</button>
+        </div>
+      </div>
+      <div id="idade-bloqueio" hidden>
+        <h2>Acesso não permitido</h2>
+        <p>Desculpe, a venda de produtos de tabacaria é proibida para menores de 18 anos.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Folhas caindo (só na tela inicial) -->
+  <div id="folhas-fundo" aria-hidden="true"></div>
+
+  <header class="topo">
+    <a href="#inicio" class="marca" aria-label="Fdrtech Mecânica Industrial — início">
+      <svg class="marca-icone" viewBox="0 0 48 48" aria-hidden="true">
+        <rect width="48" height="48" rx="8" fill="#ffc400"/>
+        <path d="M24 9l3 5 6-1 1 6 5 3-3 5 3 5-5 3-1 6-6-1-3 5-3-5-6 1-1-6-5-3 3-5-3-5 5-3 1-6 6 1z" fill="#101214"/>
+        <circle cx="24" cy="24" r="7" fill="#ffc400"/>
+        <circle cx="24" cy="24" r="3" fill="#101214"/>
+      </svg>
+      <span class="marca-texto">Fdrtech <em>Mecânica</em></span>
+    </a>
+    <div class="topo-acoes">
+      <button type="button" id="btn-instalar" class="btn-instalar" hidden>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Instalar
+      </button>
+      <a href="#carrinho" id="btn-carrinho" class="btn-carrinho" aria-label="Abrir orçamento">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 10V7a3 3 0 0 1 6 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 17c-2.5-.2-3-2.5-1.5-4.5 2 .3 3 2.2 1.5 4.5z" fill="currentColor"/></svg>
+        <span id="badge" class="badge" hidden>0</span>
+      </a>
+    </div>
+  </header>
+  <div class="faixa-rasta faixa-topo" aria-hidden="true"></div>
+
+  <nav class="etapas" id="etapas" aria-label="Etapas do pedido" hidden>
+    <ol>
+      <li><span class="etapa-num">1</span><span class="etapa-nome">Serviços</span></li>
+      <li><span class="etapa-num">2</span><span class="etapa-nome">Local</span></li>
+      <li><span class="etapa-num">3</span><span class="etapa-nome">Dados</span></li>
+      <li><span class="etapa-num">4</span><span class="etapa-nome">Pagamento</span></li>
+      <li><span class="etapa-num">5</span><span class="etapa-nome">Enviar</span></li>
+    </ol>
+  </nav>
+
+  <main id="app">
+
+    <!-- 1. TELA INICIAL ===================================== -->
+    <section class="tela" data-tela="inicio">
+      <div class="hero">
+        <svg class="hero-bandeira" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs><linearGradient id="ceu-i" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101214"/><stop offset="1" stop-color="#2b2f35"/></linearGradient></defs>
+          <rect width="300" height="150" fill="url(#ceu-i)"/>
+          <circle cx="232" cy="52" r="26" fill="#ff6a13" opacity=".55"/>
+          <g fill="#1b1e22" stroke="#3a4048" stroke-width="1">
+            <rect x="0" y="86" width="60" height="40"/><path d="M60 126V96l20-12v42zM80 126V84l20 12v30z"/>
+            <rect x="104" y="70" width="14" height="56"/><rect x="122" y="92" width="46" height="34"/>
+            <rect x="190" y="98" width="70" height="28"/><rect x="262" y="80" width="38" height="46"/>
+          </g>
+          <path d="M150 126V30M150 30h96M150 30l-28 14M150 44l20-14M170 30v8M246 30v40" stroke="#ffc400" stroke-width="3" fill="none"/>
+          <path d="M150 40l10-10M150 52l10-10M150 64l10-10M150 76l10-10M150 88l10-10M150 100l10-10M150 112l10-10" stroke="#ffc400" stroke-width="1.5"/>
+          <rect x="236" y="70" width="20" height="14" fill="#ff6a13"/>
+          <path d="M108 70V40l22-14" stroke="#9aa4ad" stroke-width="3" fill="none"/>
+          <g fill="#ffd866"><circle cx="70" cy="112" r="1.6"/><circle cx="76" cy="106" r="1.2"/><circle cx="64" cy="104" r="1.2"/><circle cx="82" cy="114" r="1"/></g>
+          <rect y="126" width="300" height="24" fill="#101214"/>
+          <path d="M0 126h300" stroke="#ffc400" stroke-width="2"/>
+        </svg>
+        <div class="hero-conteudo">
+          <p class="hero-sobre"><span>Projetos</span> <span>Fabricação</span> <span>Locação</span></p>
+          <h1>Projetos, fabricação e içamento <em>pesado</em></h1>
+          <p class="hero-texto">Escolha os serviços, diga onde e quando e receba o orçamento pelo WhatsApp. Atendemos na oficina ou no local da obra.</p>
+          <ul class="hero-regras">
+            <li id="regra-minimo">Pedido mínimo</li>
+            <li class="formas-pagamento formas-maiuscula">Pix</li>
+            <li>Oficina ou no local</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dica-ios" class="dica-ios" hidden>
+        <p><strong>Instale no iPhone:</strong> toque em <span aria-label="Compartilhar">Compartilhar ⬆️</span> e depois em <strong>“Adicionar à Tela de Início”</strong>.</p>
+        <button type="button" id="fechar-dica-ios" class="link">Entendi</button>
+      </div>
+
+      <nav id="nav-categorias" class="nav-categorias" aria-label="Categorias"></nav>
+      <div id="lista-produtos"></div>
+    </section>
+
+    <!-- 2. CARRINHO ========================================= -->
+    <section class="tela" data-tela="carrinho" hidden>
+      <h1 class="titulo-tela" tabindex="-1">Seu orçamento</h1>
+
+      <div id="carrinho-vazio" class="vazio">
+        <div class="vazio-arte" aria-hidden="true">
+          <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="#15150f" stroke="#fed100" stroke-width="3"/><path d="M34 48h52l-4 40a6 6 0 0 1-6 5H44a6 6 0 0 1-6-5z" fill="#009b3a"/><path d="M47 52V42a13 13 0 0 1 26 0v10" stroke="#fed100" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M38 66h44" stroke="#fed100" stroke-width="6"/><path d="M39 74h42" stroke="#e4002b" stroke-width="6"/></svg>
+        </div>
+        <p>Nenhum serviço escolhido ainda.</p>
+        <a href="#inicio" class="btn btn-primario">Ver serviços</a>
+      </div>
+
+      <div id="carrinho-cheio" hidden>
+        <ul id="lista-carrinho" class="lista-carrinho"></ul>
+
+        <div class="cartao resumo">
+          <div class="linha"><span>Subtotal estimado</span><strong id="carrinho-subtotal" class="contador">R$ 0,00</strong></div>
+          <div class="linha"><span>Deslocamento</span><span id="carrinho-entrega">Escolha na próxima etapa</span></div>
+          <div class="linha total"><span>Total estimado</span><strong id="carrinho-total" class="contador">R$ 0,00</strong></div>
+
+          <div class="faixa" aria-hidden="true" hidden>
+            <div class="faixa-trilho">
+              <div id="faixa-preenchida" class="faixa-preenchida"></div>
+              <span id="faixa-marca" class="faixa-marca"></span>
+            </div>
+            <div class="faixa-rotulos"><span id="faixa-min">Mín.</span><span id="faixa-max">Máx.</span></div>
+          </div>
+          <p id="aviso-faixa" class="aviso" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="acoes">
+          <a href="#inicio" class="btn btn-secundario">Mais serviços</a>
+          <button type="button" id="btn-finalizar" class="btn btn-primario" disabled>Solicitar orçamento</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. RETIRADA OU ENTREGA ============================== -->
+    <section class="tela" data-tela="entrega" hidden>
+      <h1 class="titulo-tela" tabindex="-1">Onde será o serviço?</h1>
+
+      <fieldset class="opcoes">
+        <legend class="sr-only">Local do serviço</legend>
+        <label class="opcao">
+          <input type="radio" name="modo" value="retirada">
+          <span class="opcao-corpo">
+            <svg class="opcao-icone" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 20l4-10h24l4 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M8 20h32v4a5 5 0 0 1-8 4 5 5 0 0 1-8 0 5 5 0 0 1-8 0 5 5 0 0 1-8-4z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M11 29v11h26V29M20 40v-7h8v7" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
+            <span><strong>Na oficina</strong><small>Você leva a peça ou máquina</small></span>
+          </span>
+        </label>
+        <label class="opcao">
+          <input type="radio" name="modo" value="entrega">
+          <span class="opcao-corpo">
+            <svg class="opcao-icone" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 12h24v20H4zM28 20h8l6 7v5H28z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="12" cy="35" r="4" fill="#15150f" stroke="currentColor" stroke-width="3"/><circle cx="35" cy="35" r="4" fill="#15150f" stroke="currentColor" stroke-width="3"/></svg>
+            <span><strong>No local</strong><small id="taxa-entrega-txt">Deslocamento a combinar</small></span>
+          </span>
+        </label>
+      </fieldset>
+
+      <div id="bloco-retirada" class="cartao bloco" hidden>
+        <p class="destaque">Próximo horário livre: <strong id="pronto-em">—</strong>.</p>
+        <label for="horario" class="rotulo">Quando você traz até a oficina?</label>
+        <select id="horario"></select>
+        <p class="dica"><strong>Endereço da oficina:</strong> <span id="endereco-loja"></span></p>
+      </div>
+
+      <div id="bloco-entrega" class="cartao bloco" hidden>
+        <button type="button" id="btn-localizacao" class="btn btn-secundario btn-largo">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg> Enviar localização da obra</button>
+        <p id="status-localizacao" class="dica" role="status" aria-live="polite"></p>
+        <p class="dica">A localização é pedida <strong>uma única vez</strong>, só quando você toca no botão, para montar o link do mapa no orçamento. Não fazemos rastreamento.</p>
+        <label for="endereco" class="rotulo">Endereço da obra / empresa e referência</label>
+        <textarea id="endereco" rows="3" autocomplete="street-address" placeholder="Empresa, rua, número, bairro, cidade. Ex.: galpão 3, portaria 2."></textarea>
+        <label for="data-local" class="rotulo">Data desejada (opcional)</label>
+        <input id="data-local" type="date">
+      </div>
+
+      <div class="total-mini"><span>Total estimado</span><strong id="entrega-total" class="contador">R$ 0,00</strong></div>
+      <p id="aviso-entrega" class="aviso" role="status" aria-live="polite"></p>
+
+      <div class="acoes">
+        <a href="#carrinho" class="btn btn-secundario">Voltar</a>
+        <button type="button" id="btn-ir-dados" class="btn btn-primario" disabled>Continuar</button>
+      </div>
+    </section>
+
+    <!-- 4. DADOS DO CLIENTE ================================= -->
+    <section class="tela" data-tela="dados" hidden>
+      <h1 class="titulo-tela" tabindex="-1">Seus dados</h1>
+      <form id="form-dados" class="cartao bloco" novalidate>
+        <label for="nome" class="rotulo">Nome</label>
+        <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome ou empresa" required>
+        <label for="telefone" class="rotulo">Telefone (WhatsApp)</label>
+        <input id="telefone" name="telefone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(11) 91234-5678" required>
+        <p class="dica">Usamos seu nome e telefone só para enviar o orçamento.</p>
+        <p id="erro-dados" class="aviso" role="alert"></p>
+        <div class="acoes">
+          <a href="#entrega" class="btn btn-secundario">Voltar</a>
+          <button type="submit" class="btn btn-primario">Continuar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 5. PAGAMENTO ======================================== -->
+    <section class="tela" data-tela="pagamento" hidden>
+      <h1 class="titulo-tela" tabindex="-1">Como prefere pagar?</h1>
+      <div class="total-mini"><span>Total estimado</span><strong id="pagamento-total" class="contador">R$ 0,00</strong></div>
+
+      <fieldset class="opcoes opcoes-3">
+        <legend class="sr-only">Escolha como pagar</legend>
+        <label class="opcao">
+          <input type="radio" name="pagamento" value="pix">
+          <span class="opcao-corpo">
+            <svg class="opcao-icone" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5l8 8-8 8-8-8zM24 27l8 8-8 8-8-8zM5 24l8-8 8 8-8 8zM27 24l8-8 8 8-8 8z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
+            <span><strong>Pix</strong><small>Após aprovar o orçamento</small></span>
+          </span>
+        </label>
+        <label class="opcao" id="opcao-cartao">
+          <input type="radio" name="pagamento" value="cartao">
+          <span class="opcao-corpo">
+            <svg class="opcao-icone" viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="11" width="38" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><path d="M5 19h38" stroke="currentColor" stroke-width="5"/><path d="M11 30h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+            <span><strong>Cartão</strong><small id="cartao-sub">Link de pagamento seguro</small></span>
+          </span>
+        </label>
+        <label class="opcao" id="opcao-combinar">
+          <input type="radio" name="pagamento" value="combinar">
+          <span class="opcao-corpo">
+            <svg class="opcao-icone" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="6" width="32" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15 16h18M15 24h18M15 32h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+            <span><strong>Boleto / a combinar</strong><small>Faturado, transferência ou sinal</small></span>
+          </span>
+        </label>
+        <label class="opcao" id="opcao-cripto">
+          <input type="radio" name="pagamento" value="cripto">
+          <span class="opcao-corpo">
+            <svg class="opcao-icone" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" stroke-width="3"/><path d="M19 14v20M24 12v4M24 32v4M19 15h8a4.5 4.5 0 0 1 0 9h-8m0 0h9a5 5 0 0 1 0 10h-9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><strong>Criptomoeda</strong><small>Link de pagamento externo</small></span>
+          </span>
+        </label>
+      </fieldset>
+
+      <div id="bloco-pix" class="cartao bloco" hidden>
+        <p class="aviso info">A chave Pix e o valor final vão junto com o orçamento aprovado, pelo WhatsApp.</p>
+        <div hidden><span id="pix-valor"></span><div id="pix-qr"></div><textarea id="pix-codigo"></textarea><button type="button" id="btn-copiar-pix"> Copiar</button><strong id="pix-recebedor"></strong></div>
+      </div>
+
+      <div id="bloco-cartao" class="cartao bloco" hidden>
+        <p class="aviso info">O link de pagamento com cartão é enviado com o orçamento aprovado. Parcelamento conforme a maquininha.<span hidden id="cartao-minimo"></span></p>
+        <p class="destaque" hidden>Valor: <strong id="cartao-valor"></strong></p>
+        <a id="btn-link-cartao" class="btn btn-primario btn-largo" href="#" target="_blank" rel="noopener" hidden>Pagar com cartão ↗</a>
+        
+      </div>
+
+      <div id="bloco-cripto" class="cartao bloco" hidden>
+        <p class="destaque">Valor a pagar: <strong id="cripto-valor"></strong></p>
+        <a id="btn-link-cripto" class="btn btn-primario btn-largo" href="#" target="_blank" rel="noopener">Pagar com criptomoeda ↗</a>
+        <p class="dica">O pagamento abre em outra página. Se pedir, use o valor acima em reais. Depois, volte aqui e envie o pedido.</p>
+      </div>
+
+      <div class="acoes">
+        <a href="#dados" class="btn btn-secundario">Voltar</a>
+        <button type="button" id="btn-ir-confirmar" class="btn btn-primario" disabled>Revisar orçamento</button>
+      </div>
+    </section>
+
+    <!-- 6. CONFIRMAÇÃO ====================================== -->
+    <section class="tela" data-tela="confirmacao" hidden>
+      <div class="sucesso-arte" aria-hidden="true">
+        <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="#ffc400"/><path d="M60 14l6 10 12-2 2 12 10 6-6 10 6 10-10 6-2 12-12-2-6 10-6-10-12 2-2-12-10-6 6-10-6-10 10-6 2-12 12 2z" fill="#101214"/><path d="M44 61l11 11 22-24" stroke="#ffc400" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h1 class="titulo-tela centro" tabindex="-1">Orçamento pronto para enviar!</h1>
+      <p class="centro subtitulo">Confira o resumo e toque no botão verde para mandar o pedido de orçamento pelo WhatsApp.</p>
+
+      <div id="resumo-final" class="cartao resumo"></div>
+
+      <a id="btn-whatsapp" class="btn btn-whatsapp btn-largo" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 7.5c.3-.6.6-.6 1-.6h.6c.2 0 .4 0 .6.5l.8 1.9c.1.3 0 .5-.1.7l-.6.7c-.2.2-.2.4 0 .7.6 1 1.6 2 2.7 2.6.3.2.5.1.7 0l.7-.8c.2-.2.4-.3.7-.1l1.8.9c.3.1.5.3.5.5 0 .6-.2 1.4-.8 1.8-.6.5-1.5.7-2.6.4-2.5-.7-5-3-6-5.4-.5-1.3-.4-2.4.1-3.3z" fill="currentColor"/></svg>
+        Pedir orçamento pelo WhatsApp
+      </a>
+      <button type="button" id="btn-novo" class="btn btn-secundario btn-largo">Novo orçamento</button>
+    </section>
+  </main>
+
+  <!-- Barra de total (tela inicial) -->
+  <div id="barra-total" class="barra-total">
+    <div class="barra-info">
+      <span id="barra-itens">0 itens</span>
+      <strong id="barra-valor" class="contador">R$ 0,00</strong>
+      <small id="barra-aviso"></small>
+    </div>
+    <a href="#carrinho" class="btn btn-primario">Ver orçamento</a>
+  </div>
+
+  <footer class="rodape">
+    <div class="faixa-rasta" aria-hidden="true"></div>
+    <p><strong>Fdrtech Mecânica Industrial</strong> · <span id="ano"></span></p>
+    <p>Projetos · Fabricação · Reforma · Montagem · Locação</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="confete" class="confete" aria-hidden="true"></div>
+
+  <script src="products.js"></script>
+  <script src="qrcode.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
