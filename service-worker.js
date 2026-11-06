@@ -6,7 +6,7 @@
    (ex.: "v2", "v3"...). Assim o celular dos clientes baixa a
    versão nova em vez de ficar com a antiga guardada.
    ========================================================= */
-const VERSAO = "fdrtech-mec-v1";
+const VERSAO = "fdrtech-mec-v2";
 const CACHE_FONTES = "fdrtech-mec-fontes";
 
 const ARQUIVOS = [
