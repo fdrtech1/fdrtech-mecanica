@@ -1,5 +1,5 @@
 /* =========================================================
-   FDRTECH MECÂNICA INDUSTRIAL — app.js
+   FDR PROJETOS MECÂNICOS — app.js
    =========================================================
 
    ╔═══════════════════════════════════════════════════════╗
@@ -56,11 +56,11 @@ const CONFIRMAR_IDADE = false;
 const MODO_ORCAMENTO = true;
 
 // Horário de funcionamento para retirada (formato 24h "HH:MM").
-const HORA_ABERTURA = "15:00";
-const HORA_FECHAMENTO = "20:00";
+const HORA_ABERTURA = "07:00";
+const HORA_FECHAMENTO = "18:00";
 
 // Dias em que há retirada: 0 = domingo, 1 = segunda ... 6 = sábado.
-const DIAS_FUNCIONAMENTO = [1, 2, 3, 4, 5, 6];
+const DIAS_FUNCIONAMENTO = [1, 2, 3, 4, 5];
 
 // Quantos minutos leva para o pedido ficar pronto.
 const TEMPO_PREPARO_MINUTOS = 40;
@@ -179,6 +179,11 @@ Object.assign(ILUSTRACOES, {
   "garrafa-cola": garrafa("#3b1d0e", VERM),
   "garrafa-laranja": garrafa("#ff8a00", "#1f4fbf"),
 });
+Object.assign(ILUSTRACOES, {
+  portao: `<svg viewBox="0 0 120 120" aria-hidden="true"><path d="M4 108h112" stroke="#9aa4ad" stroke-width="5"/><rect x="12" y="26" width="96" height="78" fill="none" stroke="#5d6670" stroke-width="6"/><path d="M24 100V32M36 100V32M48 100V32M60 100V32M72 100V32M84 100V32M96 100V32" stroke="${OURO}" stroke-width="5"/><path d="M18 48h84M18 84h84" stroke="${OURO}" stroke-width="6"/><g fill="${OURO}"><path d="M24 20l-5 10h10zM36 20l-5 10h10zM48 20l-5 10h10zM60 20l-5 10h10zM72 20l-5 10h10zM84 20l-5 10h10zM96 20l-5 10h10z"/></g><circle cx="30" cy="106" r="4" fill="${VERM}"/><circle cx="90" cy="106" r="4" fill="${VERM}"/></svg>`,
+  chale: `<svg viewBox="0 0 120 120" aria-hidden="true"><rect x="8" y="104" width="104" height="7" fill="${OURO}"/><path d="M60 12L12 104h96z" fill="#5d6670" stroke="${OURO}" stroke-width="6" stroke-linejoin="round"/><path d="M60 42L36 98h48z" fill="${VERDE}" opacity=".6"/><path d="M60 42v56M45 76h30" stroke="${OURO}" stroke-width="3"/><path d="M60 12v-6" stroke="${VERM}" stroke-width="4"/></svg>`,
+  art: `<svg viewBox="0 0 120 120" aria-hidden="true"><rect x="24" y="12" width="64" height="92" rx="5" fill="${CREME}"/><path d="M36 30h40M36 42h40M36 54h28M36 66h34" stroke="#5d6670" stroke-width="4" stroke-linecap="round"/><circle cx="80" cy="86" r="20" fill="${VERM}"/><circle cx="80" cy="86" r="14" fill="none" stroke="${CREME}" stroke-width="2" stroke-dasharray="4 3"/><path d="M72 86l6 6 10-12" stroke="${CREME}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+});
 
 /* ---------- Cálculos ---------- */
 const produto = (id) => PRODUTOS.find((p) => p.id === id);
@@ -258,6 +263,14 @@ function animarValor(el, valor) {
   };
   el._raf = requestAnimationFrame(passo);
   el.classList.remove("piscar"); void el.offsetWidth; el.classList.add("piscar");
+}
+// Mostra o valor animado, ou "A orçar" quando tudo é sob orçamento
+function mostrarValor(el, valor) {
+  if (!el) return;
+  if (valor > 0) return animarValor(el, valor);
+  cancelAnimationFrame(el._raf);
+  el._valor = 0;
+  el.textContent = Object.keys(estado.carrinho).length ? "A orçar" : brl(0);
 }
 function pulsarCarrinho() {
   const b = $("#btn-carrinho");
@@ -468,15 +481,15 @@ function atualizarTudo() {
   // Barra inferior da tela inicial
   $("#barra-total").classList.toggle("visivel", n > 0 && document.body.dataset.tela === "inicio");
   $("#barra-itens").textContent = `${n} ${n === 1 ? "serviço" : "serviços"}${temSobOrcamento() ? " · estimativa" : ""}`;
-  animarValor($("#barra-valor"), subtotal());
+  mostrarValor($("#barra-valor"), subtotal());
   const f = mensagemFaixa();
   const bAviso = $("#barra-aviso");
   bAviso.textContent = f.ok ? "Pronto para pedir orçamento" : f.texto;
   bAviso.classList.toggle("ok", f.ok);
 
   // Carrinho
-  animarValor($("#carrinho-subtotal"), subtotal());
-  animarValor($("#carrinho-total"), total());
+  mostrarValor($("#carrinho-subtotal"), subtotal());
+  mostrarValor($("#carrinho-total"), total());
   $("#carrinho-entrega").textContent =
     estado.modo === "entrega" ? (TAXA_ENTREGA > 0 ? brl(TAXA_ENTREGA) : "A combinar") : estado.modo === "retirada" ? "Na oficina" : "Escolha na próxima etapa";
   const aviso = $("#aviso-faixa");
@@ -490,8 +503,8 @@ function atualizarTudo() {
   barra.classList.toggle("ok", f.ok);
 
   // Outras telas
-  animarValor($("#entrega-total"), total());
-  animarValor($("#pagamento-total"), total());
+  mostrarValor($("#entrega-total"), total());
+  mostrarValor($("#pagamento-total"), total());
 }
 
 /* ---------- Recebimento: retirada ou entrega ---------- */
@@ -673,7 +686,7 @@ const dataBR = (iso) => new Date(iso + "T12:00").toLocaleDateString("pt-BR");
 
 function montarMensagem() {
   const linhas = [];
-  linhas.push(`🛠️ *Pedido de orçamento — Fdrtech Mecânica Industrial*`);
+  linhas.push(`🛠️ *Pedido de orçamento — FDR Projetos Mecânicos*`);
   linhas.push(`Orçamento: *${estado.numero}*`);
   linhas.push("");
   linhas.push(`*Cliente:* ${estado.nome.trim()}`);
@@ -685,10 +698,10 @@ function montarMensagem() {
     linhas.push(`• ${p.nome} — ${q} ${un(p, q)} — ${valorTxt(p, q)}`);
   }
   linhas.push("");
-  linhas.push(`Subtotal estimado: ${brl(subtotal())}`);
+  if (subtotal() > 0) linhas.push(`Subtotal estimado: ${brl(subtotal())}`);
   if (estado.modo === "entrega") linhas.push(`Deslocamento: ${TAXA_ENTREGA > 0 ? brl(TAXA_ENTREGA) : "a combinar"}`);
-  linhas.push(`*Total estimado: ${brl(total())}*`);
-  if (temSobOrcamento()) linhas.push(`(+ itens sob orçamento a definir)`);
+  linhas.push(subtotal() > 0 ? `*Total estimado: ${brl(total())}*` : `*Valores:* a orçar`);
+  if (subtotal() > 0 && temSobOrcamento()) linhas.push(`(+ itens sob orçamento a definir)`);
   linhas.push("");
   if (estado.modo === "retirada") {
     linhas.push(`*Local do serviço:* Na oficina`);
@@ -717,9 +730,9 @@ function renderConfirmacao() {
   $("#resumo-final").innerHTML = `
     <p class="numero-pedido">Orçamento <strong>${esc(estado.numero)}</strong></p>
     <ul class="resumo-itens">${itens}</ul>
-    <div class="linha"><span>Subtotal</span><span>${brl(subtotal())}</span></div>
+    ${subtotal() > 0 ? `<div class="linha"><span>Subtotal</span><span>${brl(subtotal())}</span></div>` : ""}
     ${estado.modo === "entrega" ? `<div class="linha"><span>Deslocamento</span><span>${TAXA_ENTREGA > 0 ? brl(TAXA_ENTREGA) : "A combinar"}</span></div>` : ""}
-    <div class="linha total"><span>Total estimado</span><strong>${brl(total())}</strong></div>${temSobOrcamento() ? `<p class="dica">+ itens sob orçamento, calculados depois.</p>` : ""}
+    <div class="linha total"><span>Total estimado</span><strong>${subtotal() > 0 ? brl(total()) : "A orçar"}</strong></div>${temSobOrcamento() ? `<p class="dica">Itens sob orçamento são calculados pela equipe e enviados pelo WhatsApp.</p>` : ""}
     <dl class="resumo-dados">
       <dt>Cliente</dt><dd>${esc(estado.nome.trim())} · ${esc(estado.telefone)}</dd>
       ${receber}

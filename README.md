@@ -1,6 +1,6 @@
-# 🛠️ Fdrtech Mecânica Industrial — Web App (PWA)
+# 🛠️ FDR Projetos Mecânicos — Web App (PWA)
 
-App de **pedido de orçamento** para serviços de mecânica industrial: projetos,
+App de **pedido de orçamento** da FDR (Fernando — projetos e corte CNC, Weber — solda pesada e serralheria, Thiago — engenheiro RT/ART), com a seção de **parcerias** da Aranãs Ferriás. Serviços: projetos,
 torno, solda, corte plasma, estruturas metálicas, caldeiraria, tubulações,
 implementos, reforma de braços e máquinas pesadas, retífica de motores,
 montagem industrial, içamento de cargas e locação de guindastes 30 t / 70 t

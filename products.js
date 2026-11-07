@@ -1,71 +1,66 @@
 /* =========================================================
-   SERVIÇOS — Fdrtech Mecânica Industrial
+   SERVIÇOS — FDR Projetos Mecânicos
 
-   Valores de referência (nov/2026), para você ajustar:
-   - Hora de torno/usinagem/solda: licitação pública de 2026 (Iomerê/SC)
-     registrou R$ 198,28 por hora-homem com consumíveis.
-   - Corte plasma CNC: custo produtivo SICRO (abr/2026) de R$ 165,67/h.
-   - Guindaste 30 t: referência GOINFRA de R$ 400/h, mínimo 10 h/dia.
-   - Guindaste 70 t: referência ORSE de R$ 4.000/dia.
-   - Caminhão munck e hora de projeto: estimativa de mercado.
+   Equipe FDR: Fernando (projetista e operador de corte CNC),
+   Weber (soldador pesado e serralheria) e Thiago (engenheiro, RT/ART).
+   Parceria: Aranãs Ferriás e terceiros (seção "Parcerias").
+
+   Tudo é orçado por projeto/peça. Só a solda tem valor mínimo.
+   Quando houver uma base de orçamentos, dá para criar a calculadora.
 
    1) CATEGORIAS: seções do cardápio, na ordem em que aparecem.
       - cor: "ouro" (amarelo), "verde" (azul) ou "vermelho" (laranja).
       - destaque: true = cards grandes.
 
    2) SERVIÇOS: cada um é um bloco { ... }.
-      - id:        identificador único, sem espaços nem acentos.
-      - categoria: id de uma das categorias.
-      - nome / descricao: textos do card.
-      - preco:     valor por unidade (ponto decimal). Use 0 para "Sob orçamento".
-      - unidade:   "hora", "diaria", "servico", "projeto" ou "un".
-      - minimo:    quantidade mínima (ex.: 10 para "mínimo 10 horas"). Opcional.
-      - aPartir:   true mostra "a partir de" antes do preço. Opcional.
-      - icone:     "projeto", "torno", "solda", "plasma", "estrutura",
-                   "caldeiraria", "tubulacao", "implemento", "braco",
-                   "motor", "montagem", "icamento", "guindaste",
-                   "munck", "maquina"
-      - selo:      etiqueta no canto do card ("" para nenhuma).
-      - itens:     deixe [] (usado só em combos).
+      - preco:   0 = "Sob orçamento". Com valor, use aPartir: true para
+                 mostrar "a partir de".
+      - unidade: "un" (peças/portões), "projeto", "servico", "hora" ou "diaria".
+      - icone:   "portao", "chale", "estrutura", "projeto", "art", "plasma",
+                 "solda", "torno", "caldeiraria", "tubulacao", "implemento",
+                 "braco", "motor", "montagem", "icamento", "guindaste",
+                 "munck", "maquina"
+      - selo:    etiqueta no canto do card ("" para nenhuma).
    ========================================================= */
 
 const CATEGORIAS = [
-  { id: "locacao", nome: "Locação", texto: "Guindastes e munck com operador.", cor: "ouro", destaque: true },
-  { id: "projetos", nome: "Projetos", texto: "Engenharia mecânica, 3D e detalhamento.", cor: "verde", destaque: false },
-  { id: "fabricacao", nome: "Fabricação", texto: "Torno, solda, plasma, estruturas e caldeiraria.", cor: "vermelho", destaque: false },
-  { id: "manutencao", nome: "Reforma", texto: "Braços hidráulicos, máquinas pesadas e motores.", cor: "ouro", destaque: false },
-  { id: "montagem", nome: "Montagem & Içamento", texto: "Montagem industrial e içamento de cargas.", cor: "verde", destaque: false },
+  { id: "serralheria", nome: "Serralheria", texto: "Portões, estruturas metálicas e chalés — com o Weber.", cor: "ouro", destaque: true },
+  { id: "projetos", nome: "Projetos & Engenharia", texto: "Projeto, detalhamento e responsabilidade técnica.", cor: "verde", destaque: false },
+  { id: "corte-solda", nome: "Corte & Solda", texto: "Plasma CNC por peça ou projeto e solda pesada.", cor: "vermelho", destaque: false },
+  { id: "parcerias", nome: "Parcerias", texto: "Executados pela Aranãs Ferriás e parceiros.", cor: "verde", destaque: false },
 ];
 
 const PRODUTOS = [
-  // ---------- LOCAÇÃO ----------
-  { id: "guindaste-30", categoria: "locacao", nome: "Guindaste 30 t", descricao: "Com operador. Ideal para montagem de estruturas, máquinas e cargas médias.", preco: 400, unidade: "hora", minimo: 10, icone: "guindaste", selo: "30 t", itens: [] },
-  { id: "guindaste-70", categoria: "locacao", nome: "Guindaste 70 t", descricao: "Com operador. Para içamentos pesados, torres e equipamentos industriais.", preco: 4000, unidade: "diaria", icone: "guindaste", selo: "70 t", itens: [] },
-  { id: "caminhao-munck", categoria: "locacao", nome: "Caminhão Munck", descricao: "Com operador. Carga, descarga e remoção de máquinas e peças.", preco: 350, unidade: "hora", minimo: 4, icone: "munck", selo: "Munck", itens: [] },
+  // ---------- SERRALHERIA (Weber) ----------
+  { id: "portao-deslizante", categoria: "serralheria", nome: "Portão Deslizante", descricao: "Sob medida, com trilho, roldanas e preparação para motor.", preco: 0, unidade: "un", icone: "portao", selo: "Mais pedido", itens: [] },
+  { id: "portao-basculante", categoria: "serralheria", nome: "Portão Basculante", descricao: "Garagem com contrapeso ou motor, chapa ou lambri.", preco: 0, unidade: "un", icone: "portao", selo: "", itens: [] },
+  { id: "portao-pivotante", categoria: "serralheria", nome: "Portão Pivotante / Social", descricao: "Portões de abrir e sociais com design exclusivo.", preco: 0, unidade: "un", icone: "portao", selo: "Design", itens: [] },
+  { id: "estrutura-metalica", categoria: "serralheria", nome: "Estruturas Metálicas", descricao: "Coberturas, mezaninos, galpões e passarelas.", preco: 0, unidade: "projeto", icone: "estrutura", selo: "", itens: [] },
+  { id: "chale", categoria: "serralheria", nome: "Chalés em Estrutura Metálica", descricao: "Estrutura de chalés e cabanas, do projeto à montagem.", preco: 0, unidade: "projeto", icone: "chale", selo: "Novo", itens: [] },
+  { id: "grade-guarda-corpo", categoria: "serralheria", nome: "Grades, Guarda-corpos e Escadas", descricao: "Grades de proteção, corrimãos e escadas metálicas.", preco: 0, unidade: "projeto", icone: "estrutura", selo: "", itens: [] },
 
-  // ---------- PROJETOS ----------
-  { id: "projeto-3d", categoria: "projetos", nome: "Projeto Mecânico 3D", descricao: "Modelagem e montagem em CAD (SolidWorks), com análise de interferência.", preco: 180, unidade: "hora", icone: "projeto", selo: "", itens: [] },
-  { id: "detalhamento", categoria: "projetos", nome: "Detalhamento Técnico", descricao: "Desenhos de fabricação, lista de materiais e DXF para plasma.", preco: 140, unidade: "hora", icone: "projeto", selo: "", itens: [] },
-  { id: "engenharia-reversa", categoria: "projetos", nome: "Engenharia Reversa", descricao: "Levantamento da peça e redesenho para fabricação.", preco: 180, unidade: "hora", icone: "projeto", selo: "", itens: [] },
-  { id: "projeto-implemento", categoria: "projetos", nome: "Projeto de Implemento", descricao: "Implementos e dispositivos sob medida, do conceito ao detalhamento.", preco: 0, unidade: "projeto", icone: "implemento", selo: "", itens: [] },
+  // ---------- PROJETOS & ENGENHARIA (Fernando + Thiago) ----------
+  { id: "projeto-3d", categoria: "projetos", nome: "Projeto Mecânico 3D", descricao: "Modelagem e montagem em CAD, com conferência de interferência.", preco: 0, unidade: "projeto", icone: "projeto", selo: "Fernando", itens: [] },
+  { id: "projeto-serralheria", categoria: "projetos", nome: "Projeto de Portões e Estruturas", descricao: "Desenho para fabricação de portões, coberturas e chalés.", preco: 0, unidade: "projeto", icone: "projeto", selo: "", itens: [] },
+  { id: "detalhamento", categoria: "projetos", nome: "Detalhamento e DXF", descricao: "Desenhos de fabricação, lista de materiais e arquivos para plasma.", preco: 0, unidade: "projeto", icone: "projeto", selo: "", itens: [] },
+  { id: "engenharia-reversa", categoria: "projetos", nome: "Engenharia Reversa", descricao: "Levantamento da peça e redesenho para fabricar de novo.", preco: 0, unidade: "projeto", icone: "projeto", selo: "", itens: [] },
+  { id: "art-rt", categoria: "projetos", nome: "ART e Responsabilidade Técnica", descricao: "Engenheiro responsável (Thiago) para projetos e laudos.", preco: 0, unidade: "projeto", icone: "art", selo: "Thiago", itens: [] },
 
-  // ---------- FABRICAÇÃO ----------
-  { id: "torno", categoria: "fabricacao", nome: "Torno / Usinagem", descricao: "Eixos, buchas, flanges e peças sob desenho.", preco: 180, unidade: "hora", icone: "torno", selo: "", itens: [] },
-  { id: "solda-mig", categoria: "fabricacao", nome: "Solda MIG/MAG", descricao: "Aço carbono, em oficina.", preco: 150, unidade: "hora", icone: "solda", selo: "", itens: [] },
-  { id: "solda-tig", categoria: "fabricacao", nome: "Solda TIG", descricao: "Inox e alumínio, acabamento fino.", preco: 190, unidade: "hora", icone: "solda", selo: "", itens: [] },
-  { id: "solda-campo", categoria: "fabricacao", nome: "Solda em Campo", descricao: "Eletrodo revestido no local da obra.", preco: 160, unidade: "hora", icone: "solda", selo: "", itens: [] },
-  { id: "plasma-cnc", categoria: "fabricacao", nome: "Corte Plasma CNC", descricao: "Corte de chapas a partir do seu DXF.", preco: 250, unidade: "hora", icone: "plasma", selo: "", itens: [] },
-  { id: "estrutura-metalica", categoria: "fabricacao", nome: "Estruturas Metálicas", descricao: "Galpões, mezaninos, passarelas e suportes.", preco: 0, unidade: "servico", icone: "estrutura", selo: "", itens: [] },
-  { id: "caldeiraria", categoria: "fabricacao", nome: "Caldeiraria Pesada", descricao: "Tanques, silos, chutes e peças de chapa grossa.", preco: 0, unidade: "servico", icone: "caldeiraria", selo: "", itens: [] },
-  { id: "tubulacao", categoria: "fabricacao", nome: "Tubulações Industriais", descricao: "Fabricação e montagem de linhas e suportes.", preco: 0, unidade: "servico", icone: "tubulacao", selo: "", itens: [] },
-  { id: "implementos", categoria: "fabricacao", nome: "Fabricação de Implementos", descricao: "Implementos industriais e agrícolas sob medida.", preco: 0, unidade: "servico", icone: "implemento", selo: "", itens: [] },
+  // ---------- CORTE & SOLDA (FDR) ----------
+  { id: "plasma-cnc", categoria: "corte-solda", nome: "Corte Plasma CNC", descricao: "Por peça ou por projeto, a partir do seu desenho ou do nosso.", preco: 0, unidade: "un", icone: "plasma", selo: "Fernando", itens: [] },
+  { id: "solda-pesada", categoria: "corte-solda", nome: "Solda Pesada", descricao: "MIG/MAG e eletrodo em aço carbono. O valor final depende do projeto.", preco: 150, aPartir: true, unidade: "servico", icone: "solda", selo: "Weber", itens: [] },
+  { id: "solda-tig", categoria: "corte-solda", nome: "Solda TIG (inox e alumínio)", descricao: "Acabamento fino. O valor final depende do projeto.", preco: 150, aPartir: true, unidade: "servico", icone: "solda", selo: "", itens: [] },
 
-  // ---------- REFORMA ----------
-  { id: "reforma-braco", categoria: "manutencao", nome: "Reforma de Braços", descricao: "Braços hidráulicos e de munck: buchas, pinos, solda e cilindros.", preco: 0, unidade: "servico", icone: "braco", selo: "", itens: [] },
-  { id: "reforma-maquina", categoria: "manutencao", nome: "Reforma de Máquinas Pesadas", descricao: "Recuperação estrutural e mecânica de máquinas de linha amarela.", preco: 0, unidade: "servico", icone: "maquina", selo: "", itens: [] },
-  { id: "retifica", categoria: "manutencao", nome: "Retífica de Motores", descricao: "Diesel e gasolina: bloco, cabeçote e virabrequim.", preco: 0, unidade: "servico", icone: "motor", selo: "", itens: [] },
-
-  // ---------- MONTAGEM & IÇAMENTO ----------
-  { id: "montagem-industrial", categoria: "montagem", nome: "Montagem Industrial", descricao: "Torres, estruturas e equipamentos, com equipe e plano de montagem.", preco: 0, unidade: "servico", icone: "montagem", selo: "", itens: [] },
-  { id: "icamento-complexo", categoria: "montagem", nome: "Içamento de Cargas Complexas", descricao: "Plano de rigging, estudo de carga e execução segura.", preco: 0, unidade: "servico", icone: "icamento", selo: "", itens: [] },
+  // ---------- PARCERIAS (Aranãs Ferriás e terceiros) ----------
+  { id: "solda-equipe", categoria: "parcerias", nome: "Soldas Pesadas com Equipe", descricao: "Equipe para obras grandes e prazos curtos.", preco: 0, unidade: "projeto", icone: "solda", selo: "Aranãs", itens: [] },
+  { id: "montagem-industrial", categoria: "parcerias", nome: "Montagens Complexas", descricao: "Torres, estruturas e equipamentos industriais.", preco: 0, unidade: "projeto", icone: "montagem", selo: "Aranãs", itens: [] },
+  { id: "icamento-complexo", categoria: "parcerias", nome: "Içamento de Cargas", descricao: "Plano de rigging e execução segura.", preco: 0, unidade: "servico", icone: "icamento", selo: "Aranãs", itens: [] },
+  { id: "caldeiraria", categoria: "parcerias", nome: "Caldeiraria Pesada e Tubulações", descricao: "Tanques, silos, chutes, linhas e suportes.", preco: 0, unidade: "projeto", icone: "caldeiraria", selo: "Aranãs", itens: [] },
+  { id: "reforma-braco", categoria: "parcerias", nome: "Reforma de Braços e Máquinas Pesadas", descricao: "Braços hidráulicos, munck e máquinas de linha amarela.", preco: 0, unidade: "servico", icone: "braco", selo: "Aranãs", itens: [] },
+  { id: "torno", categoria: "parcerias", nome: "Torno e Usinagem", descricao: "Eixos, buchas, flanges e peças sob desenho.", preco: 0, unidade: "un", icone: "torno", selo: "Aranãs", itens: [] },
+  { id: "implementos", categoria: "parcerias", nome: "Fabricação de Implementos", descricao: "Implementos industriais e agrícolas sob medida.", preco: 0, unidade: "projeto", icone: "implemento", selo: "Aranãs", itens: [] },
+  { id: "guindaste-30", categoria: "parcerias", nome: "Locação de Guindaste 30 t", descricao: "Com operador.", preco: 0, unidade: "diaria", icone: "guindaste", selo: "Aranãs", itens: [] },
+  { id: "guindaste-70", categoria: "parcerias", nome: "Locação de Guindaste 70 t", descricao: "Com operador.", preco: 0, unidade: "diaria", icone: "guindaste", selo: "Aranãs", itens: [] },
+  { id: "caminhao-munck", categoria: "parcerias", nome: "Locação de Caminhão Munck", descricao: "Com operador.", preco: 0, unidade: "diaria", icone: "munck", selo: "Aranãs", itens: [] },
+  { id: "retifica", categoria: "parcerias", nome: "Retífica de Motores", descricao: "Serviço de terceiro parceiro.", preco: 0, unidade: "servico", icone: "motor", selo: "Terceiro", itens: [] },
 ];

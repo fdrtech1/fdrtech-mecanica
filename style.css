@@ -706,3 +706,37 @@ input[type="date"] {
 .etapas li.feita .etapa-num { color: #101214; }
 .folha-cai svg { animation-duration: calc(var(--dur) / 8); }
 @keyframes balancar { from { transform: translateX(-3px) rotate(-6deg); } to { transform: translateX(3px) rotate(6deg); } }
+
+/* =========================================================
+   EQUIPE E PARCERIA
+   ========================================================= */
+.equipe { margin-top: 26px; }
+.equipe-lista {
+  list-style: none; margin: 12px -16px 0; padding: 4px 16px 10px;
+  display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.equipe-lista::-webkit-scrollbar { display: none; }
+.membro {
+  flex: 0 0 78%; scroll-snap-align: start; display: flex; gap: 12px; align-items: center;
+  background: var(--preto-2); border: 1.5px solid var(--borda); border-left: 5px solid var(--cor);
+  border-radius: 12px; padding: 14px;
+}
+@media (min-width: 640px) { .membro { flex-basis: calc(33.33% - 7px); } }
+.membro-avatar {
+  flex: none; width: 46px; height: 46px; border-radius: 10px; display: grid; place-items: center;
+  background: var(--cor); color: var(--preto); font-family: var(--fonte-titulo); font-weight: 800; font-size: 1.5rem;
+}
+.membro strong { display: block; font-family: var(--fonte-titulo); font-size: 1.25rem; text-transform: uppercase; }
+.membro small { color: var(--texto-suave); line-height: 1.3; }
+.parceiro {
+  margin-top: 12px; padding: 14px 16px; border-radius: 12px; display: grid; gap: 4px;
+  background: var(--preto-2); border: 1.5px dashed var(--verde-vivo);
+}
+.parceiro strong { font-family: var(--fonte-titulo); font-size: 1.35rem; text-transform: uppercase; color: var(--verde-vivo); }
+.parceiro small { color: var(--texto-suave); }
+.parceiro .horario { color: var(--ouro); font-weight: 700; }
+.selo-parceiro {
+  justify-self: start; background: var(--verde-vivo); color: var(--preto); font-weight: 800;
+  font-size: 0.72rem; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.04em;
+}
+body.filtrando .equipe { display: none; }
